@@ -1,0 +1,26 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+    commands:
+      - pip install git-remote-codecommit
+  pre_build:
+    commands:
+      - echo Build Started on - `date`
+  build:
+    commands:
+      - mvn clean
+      - mvn install
+  post_build:
+    commands:
+      - echo Build Finished on - `date`
+      - git clone https://github.com/rehannali/aws-code-scripts.git /tmp/aws-scripts
+artifacts:
+  files:
+    - target/*.jar
+    - /tmp/aws-scripts/*.yml
+    - /tmp/aws-scripts/Dockerfile
+    - /tmp/aws-scripts/scripts/*.sh
+  discard-paths: yes
+  name: eureka-server

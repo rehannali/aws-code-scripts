@@ -1,0 +1,29 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/eureka-server
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  BeforeInstall:
+    - location: clean-files.sh
+      timeout: 60
+      runas: ec2-user
+  AfterInstall:
+    - location: fix-privileges.sh
+      timeout: 60
+      runas: ec2-user
+  ApplicationStart:
+    - location: start-application.sh
+      timeout: 180
+      runas: ec2-user
+  ApplicationStop:
+    - location: stop-application.sh
+      timeout: 180
+      runas: ec2-user
